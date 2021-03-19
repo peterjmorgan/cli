@@ -1,0 +1,167 @@
+name: phylum-cli
+bin_name: phylum-cli
+version: "0.0.4"
+author: Phylum, Inc.
+about: Client interface to the Phylum system
+args:
+    - config:
+        short: c
+        long: config
+        value_name: FILE
+        help: Sets a custom config file
+        takes_value: true
+    - verbose:
+        short: v
+        multiple: true
+        help: Sets the level of verbosity
+subcommands:
+    - ping:
+        about: Ping the remote system to verify it is available
+    - register:
+        about: Register a new system user
+        args:
+            - email:
+                short: u
+                help: User e-mail address
+                takes_value: true
+                required: true
+            - password:
+                short: p
+                help: Password
+                takes_value: true
+                required: true
+            - first:
+                short: f
+                help: First name
+                takes_value: true
+                required: true
+            - last:
+                short: l
+                help: Last name
+                takes_value: true
+                required: true
+    - submit:
+        about: Submits a request to the processing system
+        args:
+            - name:
+                short: n
+                help: Package name
+                takes_value: true
+                required: true
+            - version:
+                short: v
+                help: Package version
+                takes_value: true
+                required: true
+            - type:
+                short: t
+                help: Package type (`npm`, `ruby`, etc)
+                takes_value: true
+                required: false
+            - low-priority: 
+                short: L
+                takes_value: false
+                required: false
+            - recurse: 
+                short: R
+                takes_value: false
+                required: false
+    - batch:
+        about: Submits a batch of requests to the processing system
+        args:
+            - file:
+                short: f
+                help: File (or piped stdin) containing the list of packages (format `<name>:<version>`)
+                takes_value: true
+                required: false
+            - type:
+                short: t
+                help: Package type (`npm`, `ruby`, etc)
+                takes_value: true
+                required: false
+            - low-priority: 
+                short: L
+                takes_value: false
+                required: false
+            - recurse: 
+                short: R
+                takes_value: false
+                required: false
+    - status:
+        about: Polls the system for request / job / package status
+        args:
+            - request_id:
+                short: i
+                help: Request ID
+                takes_value: true
+                required: false
+            - name:
+                short: n
+                help: Package name
+                takes_value: true
+                required: false
+            - version:
+                short: v
+                help: Package version
+                takes_value: true
+                required: false
+            - type:
+                short: t
+                help: Package type (`npm`, `ruby`, etc)
+                takes_value: true
+                required: false
+            - threshold:
+                short: T
+                help: Set a package score threshold (packages with a score below this will cause the application to exit with an error code `STATUS_THRESHOLD_BREACHED [1]`
+                takes_value: true
+                required: false
+    - cancel:
+        about: Cancels a request currently in progress
+        args:
+            - request_id:
+                short: i
+                help: Request ID
+                takes_value: true
+                required: true
+    - tokens:
+        about: Manage API tokens
+        args:
+            - create:
+                short: c
+                help: Create new API token
+                takes_value: false
+                required: false
+            - delete:
+                short: d
+                help: Delete (de-activate) an existing token
+                takes_value: true
+                required: false
+    - heuristics:
+        about: List available heuristics / submit packages for heuristics
+        subcommands:
+            - submit:
+                about: Submit a package to the system for heuristics
+                args:
+                    - name:
+                        short: n
+                        help: Package name
+                        takes_value: true
+                        required: true
+                    - version:
+                        short: v
+                        help: Package version
+                        takes_value: true
+                        required: true
+                    - heuristics:
+                        short: h
+                        help: "Heuristics to run (comma separated list, default: all available)"
+                        takes_value: true
+                        required: false
+                    - include-deps:
+                        short: d
+                        help: "Include dependencies (default: false)"
+                        takes_value: false
+                        required: false
+    - version:
+        about: Display application version
+
